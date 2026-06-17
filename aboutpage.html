@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SHWZ — About Me</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--shark:#28282D;--iron:#CCD2D7;--canary:#E6FF50;}
+html,body{background:#18181c;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--iron);overflow-x:hidden;cursor:none;}
+
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse 120% 60% at 50% 0%,#1e1e22 0%,transparent 70%),radial-gradient(ellipse 100% 80% at 0% 50%,#1a1a20 0%,transparent 60%),radial-gradient(ellipse 100% 80% at 100% 50%,#1a1a20 0%,transparent 60%),linear-gradient(180deg,#18181c 0%,#222228 40%,#1c1c22 70%,#18181c 100%);}
+
+/* ── CUSTOM CURSOR ── */
+.cursor{width:12px;height:12px;background:var(--canary);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .15s ease,width .2s,height .2s;mix-blend-mode:difference;}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(230,255,80,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all .12s ease;mix-blend-mode:difference;}
+
+/* ── NAV ── */
+nav{position:fixed;top:20px;left:50%;transform:translateX(-50%);width:calc(100% - 64px);max-width:1200px;background:rgba(28,28,34,.55);backdrop-filter:blur(14px);border:1px solid rgba(204,210,215,.12);border-radius:999px;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;z-index:200;}
+.nav-logo{font-size:18px;font-weight:700;letter-spacing:.15em;color:var(--canary);}
+.nav-links{display:flex;gap:8px;align-items:center;}
+.nav-links a{text-decoration:none;color:var(--iron);font-size:14px;letter-spacing:.04em;padding:6px 18px;border-radius:999px;border:1px solid rgba(204,210,215,.2);transition:background .2s,color .2s;}
+.nav-links a:hover{background:var(--canary);color:var(--shark);}
+.nav-contact{position:relative;}
+.nav-contact-btn{background:var(--canary);color:var(--shark);font-size:13px;font-weight:700;letter-spacing:.08em;padding:7px 20px;border-radius:999px;border:none;cursor:none;display:flex;align-items:center;gap:7px;transition:opacity .2s;}
+.nav-contact-btn:hover{opacity:.85;}
+.chev{font-size:10px;display:inline-block;transition:transform .25s;}
+.nav-contact.open .chev{transform:rotate(180deg);}
+.contact-dropdown{position:absolute;top:calc(100% + 10px);right:0;background:rgba(22,22,28,.97);backdrop-filter:blur(16px);border:1px solid rgba(204,210,215,.12);border-radius:14px;padding:8px;min-width:190px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .22s,transform .22s;z-index:300;}
+.nav-contact.open .contact-dropdown{opacity:1;pointer-events:all;transform:translateY(0);}
+.contact-dropdown a,.contact-dropdown button{display:flex;align-items:center;gap:10px;width:100%;text-decoration:none;color:var(--iron);font-size:13px;letter-spacing:.04em;padding:10px 14px;border-radius:9px;border:none;background:transparent;cursor:none;transition:background .18s,color .18s;text-align:left;}
+.contact-dropdown a:hover,.contact-dropdown button:hover{background:rgba(230,255,80,.1);color:var(--canary);}
+.drop-icon{font-size:15px;width:22px;text-align:center;}
+.drop-divider{height:1px;background:rgba(204,210,215,.08);margin:4px 0;}
+
+/* ── ABOUT HERO (photo bg fading L→R) ── */
+.about-hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  /* Left anchor placed exactly at 50% of the viewport width */
+  padding:0 8vw 0 50vw;
+  overflow:hidden;
+}
+
+/* Fallback for smaller screens to ensure the text isn't entirely squashed */
+@media (max-width: 900px) {
+  .about-hero {
+    padding:0 8vw 0 12vw;
+  }
+}
+
+.about-photo-wrap{position:absolute;inset:0;z-index:0;}
+.about-photo-wrap img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:20% 30%;
+  filter:grayscale(1) contrast(1.05);
+}
+
+/* fade the photo out left → right into the page bg, perfectly timed with the centered text */
+.about-photo-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(to right, rgba(24,24,28,0) 0%, rgba(24,24,28,.65) 40%, rgba(24,24,28,.95) 55%, #18181c 100%),
+    linear-gradient(to top, rgba(10,10,12,.65) 0%, transparent 35%);
+}
+
+.about-content{position:relative;z-index:1;max-width:560px;}
+.about-label{font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--canary);font-weight:700;margin-bottom:18px;}
+.about-greet{font-family:'Syne',sans-serif;font-size:clamp(34px,5vw,58px);font-weight:800;line-height:1.08;letter-spacing:-.02em;color:var(--iron);margin-bottom:22px;}
+.about-greet .accent{color:var(--canary);font-style:italic;}
+.about-body{font-size:clamp(14px,1.5vw,16px);line-height:1.8;color:var(--iron);opacity:.75;margin-bottom:16px;max-width:480px;}
+.about-cta-line{font-family:'Syne',sans-serif;font-size:clamp(18px,2.2vw,26px);font-weight:700;color:var(--iron);margin:28px 0 32px;letter-spacing:-.01em;}
+.about-cta-line .accent{color:var(--canary);}
+
+/* CTA & REVEAL OPTIONS */
+.cta-wrapper { display: flex; align-items: center; min-height: 54px; }
+.cta{display:inline-flex;align-items:center;gap:10px;background:transparent;border:1.5px solid var(--canary);color:var(--canary);font-size:15px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:16px 36px;border-radius:999px;cursor:none;transition:background .25s,color .25s,transform .18s;outline:none;}
+.cta:hover{background:var(--canary);color:var(--shark);transform:scale(1.04);}
+.arr{width:18px;height:1px;background:currentColor;position:relative;display:inline-block;transition:width .2s;}
+.arr::after{content:'';position:absolute;right:0;top:-3px;width:6px;height:6px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);}
+.cta:hover .arr{width:26px;}
+
+.cta-options { display: none; gap: 14px; }
+.cta-options.visible { display: flex; animation: fadeInRight 0.4s ease forwards; }
+.cta-option { display:inline-flex;align-items:center;gap:8px;background:rgba(230,255,80,.05);border:1.5px solid var(--canary);color:var(--canary);font-size:14px;font-weight:600;letter-spacing:.08em;padding:16px 32px;border-radius:999px;text-decoration:none;cursor:none;transition:border-color .25s,color .25s,background .25s,transform .18s; outline:none; text-transform: uppercase;}
+.cta-option:hover { background:var(--canary); color:var(--shark); transform: scale(1.04); }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(-15px); } to { opacity: 1; transform: translateX(0); } }
+
+
+.sparkle-container{position:fixed;pointer-events:none;z-index:999;top:0;left:0;width:100%;height:100%;overflow:hidden;}
+.sparkle{position:absolute;border-radius:50%;background:var(--canary);opacity:0;animation:sparkFly .9s ease-out forwards;}
+@keyframes sparkFly{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0;}}
+
+/* ── LOGIC AND LENS ── */
+#logic-lens{position:relative;padding:120px 8vw 140px;overflow:hidden;}
+.lens-bg{position:absolute;inset:0;z-index:0;background-color:#1c1c20;background-image:linear-gradient(rgba(204,210,215,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(204,210,215,.025) 1px,transparent 1px);background-size:40px 40px;}
+.lens-bg::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 160px 60px rgba(8,8,10,.85);}
+.lens-inner{position:relative;z-index:1;max-width:780px;}
+
+.lens-heading-wrap{display:flex;align-items:center;gap:24px;margin-bottom:52px;}
+.lens-heading-wrap hr{flex:1;border:none;border-top:1px solid rgba(204,210,215,.12);}
+.lens-heading-wrap h2{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(38px,5.5vw,72px);font-weight:900;
+  text-transform:uppercase;letter-spacing:-.02em;line-height:1;
+  color:transparent;-webkit-text-stroke:2px rgba(204,210,215,.45);
+  white-space:nowrap;
+}
+
+.lens-body{font-size:clamp(15px,1.7vw,18px);line-height:1.85;color:var(--iron);opacity:.8;margin-bottom:22px;}
+.lens-body strong{color:var(--canary);font-weight:700;opacity:1;}
+.lens-body .small-heart{color:var(--canary);font-style:italic;}
+
+/* small decorative tag row under the section */
+.lens-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:36px;}
+.lens-tag{padding:8px 18px;border:1px solid rgba(230,255,80,.22);border-radius:999px;font-size:12px;letter-spacing:.06em;color:var(--iron);background:rgba(230,255,80,.04);transition:border-color .2s,color .2s,box-shadow .2s;cursor:none;}
+.lens-tag:hover{border-color:var(--canary);color:var(--canary);box-shadow:0 0 14px rgba(230,255,80,.35);}
+
+/* ── SOCIALS (From Home Page) ── */
+.socials{display:flex;gap:16px;flex-wrap:wrap;margin-top:42px;}
+.social-link{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--iron);border:1px solid rgba(204,210,215,.15);border-radius:999px;padding:12px 24px;font-size:13px;letter-spacing:.06em;transition:border-color .2s,color .2s,background .2s;cursor:none;}
+.social-link:hover{border-color:var(--canary);color:var(--shark);background:var(--canary);}
+.social-icon{width:18px;height:18px;fill:currentColor;}
+
+
+/* ── FOOTER (minimal) ── */
+footer{padding:48px 8vw;text-align:center;font-size:11px;opacity:.2;letter-spacing:.1em;border-top:1px solid rgba(204,210,215,.07);}
+
+/* ── MOBILE RESPONSIVENESS PATCH ── */
+@media (max-width: 768px) {
+  /* 1. Fix Nav layout */
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px;
+    width: calc(100% - 32px);
+  }
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* 2. Fix Hero layout (prevent text squishing against the 50vw padding) */
+  .about-hero {
+    padding: 160px 8vw 80px 8vw;
+    align-items: flex-start;
+  }
+  .about-photo-wrap::after {
+    /* Darken the background more evenly on mobile so text is readable */
+    background: linear-gradient(to bottom, rgba(24,24,28,0.4) 0%, rgba(24,24,28,0.85) 50%, #18181c 100%);
+  }
+  .about-photo-wrap img {
+    object-position: center top;
+  }
+
+  /* 3. Wrap CTA Options on small screens */
+  .cta-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .cta-options {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  .cta-option {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 4. Fix Logic & Lens padding & alignment */
+  #logic-lens {
+    padding: 80px 6vw 100px;
+    text-align: center; /* Centers the body text */
+  }
+  .lens-heading-wrap h2 {
+    white-space: normal; /* Allows text to wrap instead of overflowing */
+    font-size: clamp(30px, 8vw, 42px);
+  }
+  .lens-tags, .socials {
+    justify-content: center; /* Centers the tags and social links */
+  }
+
+  /* 5. Hide cursor on touch */
+  @media (hover: none) and (pointer: coarse) {
+    .cursor, .cursor-ring {
+      display: none !important;
+    }
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SHWZ</div>
+  <div class="nav-links">
+    <a href="HomePage.html">Home</a>
+    <a href="AboutMe.html">About Me</a>
+    <div class="nav-contact" id="navContact">
+      <button class="nav-contact-btn" id="contactToggle">Contact <span class="chev">▾</span></button>
+      <div class="contact-dropdown">
+        <a href="mailto:shwzzxstories@gmail.com"><span class="drop-icon">✉️</span> Email</a>
+        <a href="https://wa.me/917037780001" target="_blank"><span class="drop-icon">💬</span> WhatsApp</a>
+        <div class="drop-divider"></div>
+        <button id="dropSocial"><span class="drop-icon">🔗</span> Social Media</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ABOUT HERO -->
+<section class="about-hero">
+  <div class="about-photo-wrap">
+    <img src="me.png" alt="Shahwaz Khan"/>
+  </div>
+  <div class="about-content">
+    <p class="about-label">About Me</p>
+    <h1 class="about-greet">HeeYy, I'm <span class="accent">Shahwaz Khan.</span></h1>
+    <p class="about-body">I am a video editor and filmmaker. I love hearing stories, but even more, I love telling them... basically, I'm a <strong style="color:var(--canary);">STORYTELLER!!</strong></p>
+    <p class="about-body">I craft videos that hold stories, visuals that don't just build a connection, but stay with you long after you watch.</p>
+    <p class="about-cta-line">So let's create a story!! <span class="accent">yours and mine,</span> together.</p>
+    
+    <div class="cta-wrapper">
+      <button class="cta" id="ctaBtn">Let's Plan Together <span class="arr"></span></button>
+      <div class="cta-options" id="ctaOptions">
+        <a href="mailto:shwzzxstories@gmail.com" class="cta-option"><span class="drop-icon">✉️</span> Email</a>
+        <a href="https://wa.me/917037780001" target="_blank" class="cta-option"><span class="drop-icon">💬</span> WhatsApp</a>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- LOGIC AND LENS -->
+<section id="logic-lens">
+  <div class="lens-bg"></div>
+  <div class="lens-inner">
+    <div class="lens-heading-wrap"><hr/><h2>Logic &amp; Lens</h2><hr/></div>
+
+    <p class="lens-body">Currently, I'm a <strong>3rd-year undergrad</strong> studying Electrical and Computer Engineering <em>(with Honours in AIML)</em> at JMI in New Delhi.</p>
+    <p class="lens-body">Alongside my engineering degree, I am also a <strong>theatrical artist</strong>. This mashup of deep logical thinking and raw creative expression is my secret sauce, it helps me find the most unique, unexpected ways to express. <span class="small-heart">&lt;33</span></p>
+
+    <div class="socials">
+      <a href="https://x.com/Shwzzx04" target="_blank" class="social-link"><svg class="social-icon" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 2.25h6.988l4.26 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X / Twitter</a>
+      <a href="https://www.instagram.com/shwzzx04" target="_blank" class="social-link"><svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
+      <a href="https://www.linkedin.com/in/shahwaz-khan-582930322/" target="_blank" class="social-link"><svg class="social-icon" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+      <a href="https://www.youtube.com/@Shwzz04" target="_blank" class="social-link"><svg class="social-icon" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>© 2025 SHWZ — All rights reserved.</footer>
+
+<div class="sparkle-container" id="sparkles"></div>
+
+<script>
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-6)+'px';cursor.style.top=(my-6)+'px';});
+function animRing(){rx+=(mx-rx-18)*.12;ry+=(my-ry-18)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+
+const sparklesEl=document.getElementById('sparkles');
+function playChime(){try{const c=new(window.AudioContext||window.webkitAudioContext)();[523,659,784,1047].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(f,c.currentTime+i*.09);g.gain.setValueAtTime(0,c.currentTime+i*.09);g.gain.linearRampToValueAtTime(.18,c.currentTime+i*.09+.03);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+i*.09+.35);o.start(c.currentTime+i*.09);o.stop(c.currentTime+i*.09+.4);});}catch(e){}}
+function burst(x,y){for(let i=0;i<18;i++){const s=document.createElement('div');s.className='sparkle';const a=Math.random()*Math.PI*2,d=40+Math.random()*80;s.style.cssText=`left:${x}px;top:${y}px;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;width:${4+Math.random()*5}px;height:${4+Math.random()*5}px;animation-duration:${.6+Math.random()*.5}s;animation-delay:${Math.random()*.12}s;`;sparklesEl.appendChild(s);s.addEventListener('animationend',()=>s.remove());}}
+
+const ctaBtn = document.getElementById('ctaBtn');
+ctaBtn.addEventListener('mouseenter',e=>{playChime();const r=e.target.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);});
+
+// Reveal Email and WhatsApp options on CTA click
+ctaBtn.addEventListener('click', e => {
+  ctaBtn.style.display = 'none';
+  document.getElementById('ctaOptions').classList.add('visible');
+});
+
+const navContact=document.getElementById('navContact');
+document.getElementById('contactToggle').addEventListener('click',e=>{e.stopPropagation();navContact.classList.toggle('open');});
+document.addEventListener('click',()=>navContact.classList.remove('open'));
+
+// Updated routing for Social Media dropdown click
+document.getElementById('dropSocial').addEventListener('click',()=>{
+  window.location.href='HomePage.html#contact';
+});
+</script>
+</body>
+</html>
